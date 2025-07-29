@@ -1,7 +1,14 @@
 <?php
 
-$name = $_GET['name'] ?? 'World';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-header('Content-Type: text/html; charset=utf-8');
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-printf('Hello %s', htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
+$request = Request::createFromGlobals();
+
+$name = $request->query->get('name', 'World');
+
+$response = new Response('Hello ' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8'));
+
+$response->send();
